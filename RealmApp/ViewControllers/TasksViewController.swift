@@ -44,6 +44,10 @@ class TasksViewController: UITableViewController {
         section == 0 ? "CURRENT TASKS" : "COMPLETED TASKS"
     }
     
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        false
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TasksCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
@@ -53,27 +57,7 @@ class TasksViewController: UITableViewController {
         cell.contentConfiguration = content
         return cell
     }
-    
-//    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//
-//        let taskSourse = sourceIndexPath.section == 0 ? currentTasks[sourceIndexPath.row] : completedTasks[sourceIndexPath.row]
-//        let taskDestination = destinationIndexPath.section == 0 ? currentTasks[destinationIndexPath.row] : completedTasks[destinationIndexPath.row]
-//        let indexSourse = taskList.tasks.index(of: taskSourse)
-//        let indexDestination = taskList.tasks.index(of: taskDestination)
-//
-//        StorageManager.shared.insert(taskSourse, to: taskList, sourseIndex: index, destinationIndex: destinationIndexPath.row)
-//
-//
-//
-//
-
-//
-//        if sourceIndexPath.section == 1 && sourceIndexPath.section == destinationIndexPath.section {
-//            StorageManager.shared.insert(task, to: taskList, sourseIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
-//        }
-//        tableView.reloadData()
-//    }
-//    
+ 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         true
     }
@@ -133,7 +117,6 @@ extension TasksViewController {
                 self.saveTask(withName: newValue, andNote: note)
             }
         }
-        
         present(alert, animated: true)
     }
     
@@ -144,5 +127,4 @@ extension TasksViewController {
         let rowIndex = IndexPath(row: currentTasks.index(of: task) ?? 0, section: 0)
         tableView.insertRows(at: [rowIndex], with: .automatic)
     }
-
 }

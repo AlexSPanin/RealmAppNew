@@ -12,7 +12,7 @@ import RealmSwift
 class TaskListViewController: UITableViewController {
 
     var taskLists: Results<TaskList>!
-    var sort: Bool = true
+    var sort: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,13 +91,13 @@ class TaskListViewController: UITableViewController {
 
     @IBAction func sortingList(_ sender: UISegmentedControl) {
         if sort {
-            taskLists = taskLists.sorted(byKeyPath: "date", ascending: false)
+           taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
             sort = false
         } else {
-            taskLists = taskLists.sorted(byKeyPath: "name", ascending: false)
+            taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
             sort = true
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     @objc private func  addButtonPressed() {
@@ -125,7 +125,6 @@ extension TaskListViewController {
                 self.save(taskList: newValue)
             }
         }
-        
         present(alert, animated: true)
     }
     

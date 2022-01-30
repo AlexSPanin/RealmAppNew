@@ -56,7 +56,6 @@
 				D5D1A5D58BD6538A0A51BDBB /* Pods-RealmApp.debug.xcconfig */,
 				C8F2694B888977A5D4B8CE06 /* Pods-RealmApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -99,14 +98,12 @@
 		A872A10D20E9D82400ECE2BA /* RealmApp */ = {
 			isa = PBXGroup;
 			children = (
-				A81BC31C256FED21002D9595 /* ViewControllers */,
-				A8969B33270F34B700F7DED0 /* Models */,
 				A8969B34270F34C900F7DED0 /* Services */,
-				A872A10E20E9D82400ECE2BA /* AppDelegate.swift */,
-				A872A11220E9D82400ECE2BA /* Main.storyboard */,
-				A872A11520E9D82600ECE2BA /* Assets.xcassets */,
-				A872A11720E9D82600ECE2BA /* LaunchScreen.storyboard */,
-				A872A11A20E9D82600ECE2BA /* Info.plist */,
+				A81BC31C256FED21002D9595 /* ViewControllers */,
+				E2AE8B4927A6EFF500C1CADD /* Support */,
+				E2AE8B4827A6EFCE00C1CADD /* Files */,
+				E2AE8B4727A6EFBB00C1CADD /* Storyboards */,
+				A8969B33270F34B700F7DED0 /* Models */,
 			);
 			path = RealmApp;
 			sourceTree = "<group>";
@@ -126,6 +123,32 @@
 				A804828527103A100095A493 /* StorageManager.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		E2AE8B4727A6EFBB00C1CADD /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				A872A11720E9D82600ECE2BA /* LaunchScreen.storyboard */,
+				A872A11220E9D82400ECE2BA /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		E2AE8B4827A6EFCE00C1CADD /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				A872A11520E9D82600ECE2BA /* Assets.xcassets */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		E2AE8B4927A6EFF500C1CADD /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				A872A10E20E9D82400ECE2BA /* AppDelegate.swift */,
+				A872A11A20E9D82600ECE2BA /* Info.plist */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,7 +422,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QD5349NP78;
-				INFOPLIST_FILE = RealmApp/Info.plist;
+				INFOPLIST_FILE = RealmApp/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -419,7 +442,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QD5349NP78;
-				INFOPLIST_FILE = RealmApp/Info.plist;
+				INFOPLIST_FILE = RealmApp/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

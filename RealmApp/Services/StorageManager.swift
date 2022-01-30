@@ -54,14 +54,6 @@ class StorageManager {
         }
     }
     
-    func insert(_ task: Task, to taskList: TaskList, sourseIndex: Int, destinationIndex: Int) {
-        write {
-            taskList.tasks.remove(at: sourseIndex)
-            taskList.tasks.insert(task, at: destinationIndex)
-            
-        }
-    }
-    
     func delete(_ task: Task) {
         write {
             realm.delete(task)
@@ -80,6 +72,7 @@ class StorageManager {
             task.setValue(complite, forKey: "isComplete")
         }
     }
+    
     private func write(completion: () -> Void) {
         do {
             try realm.write {
