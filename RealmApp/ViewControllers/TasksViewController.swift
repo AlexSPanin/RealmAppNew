@@ -15,7 +15,7 @@ class TasksViewController: UITableViewController {
     
     private var currentTasks: Results<Task>!
     private var completedTasks: Results<Task>!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = taskList.name
@@ -54,10 +54,69 @@ class TasksViewController: UITableViewController {
         return cell
     }
     
+//    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//
+//        let taskSourse = sourceIndexPath.section == 0 ? currentTasks[sourceIndexPath.row] : completedTasks[sourceIndexPath.row]
+//        let taskDestination = destinationIndexPath.section == 0 ? currentTasks[destinationIndexPath.row] : completedTasks[destinationIndexPath.row]
+//        let indexSourse = taskList.tasks.index(of: taskSourse)
+//        let indexDestination = taskList.tasks.index(of: taskDestination)
+//
+//        StorageManager.shared.insert(taskSourse, to: taskList, sourseIndex: index, destinationIndex: destinationIndexPath.row)
+//
+//
+//
+//
+
+//
+//        if sourceIndexPath.section == 1 && sourceIndexPath.section == destinationIndexPath.section {
+//            StorageManager.shared.insert(task, to: taskList, sourseIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
+//        }
+//        tableView.reloadData()
+//    }
+//    
+//    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+//        true
+//    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
+    
+        var text = "Done"
+        var color = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        var complite = true
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            StorageManager.shared.delete(task)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+            self.showAlert(with: task) {
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+            isDone(true)
+        }
+        
+        if indexPath.section == 1 {
+            text = "Not Done"
+            color = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+            complite = false
+        }
+        
+        let doneAction = UIContextualAction(style: .normal, title: text) { _, _, isDone in
+            StorageManager.shared.done(task: task, complite: complite)
+            tableView.reloadData()
+            isDone(true)
+        }
+        doneAction.backgroundColor = color
+        editAction.backgroundColor = .orange
+        return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
+    }
+    
     @objc private func addButtonPressed() {
         showAlert()
     }
-
 }
 
 extension TasksViewController {
@@ -67,8 +126,9 @@ extension TasksViewController {
         let alert = UIAlertController.createAlert(withTitle: title, andMessage: "What do you want to do?")
         
         alert.action(with: task) { newValue, note in
-            if let _ = task, let _ = completion {
-                // TODO - edit task
+            if let task = task, let completion = completion {
+                StorageManager.shared.edit(task, newName: newValue, newNote: note)
+                completion()
             } else {
                 self.saveTask(withName: newValue, andNote: note)
             }
@@ -84,4 +144,5 @@ extension TasksViewController {
         let rowIndex = IndexPath(row: currentTasks.index(of: task) ?? 0, section: 0)
         tableView.insertRows(at: [rowIndex], with: .automatic)
     }
+
 }

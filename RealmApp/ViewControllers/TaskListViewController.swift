@@ -12,6 +12,7 @@ import RealmSwift
 class TaskListViewController: UITableViewController {
 
     var taskLists: Results<TaskList>!
+    var sort: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +43,12 @@ class TaskListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskListCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
+        
         let taskList = taskLists[indexPath.row]
         content.text = taskList.name
-        content.secondaryText = "\(taskList.tasks.count)"
+        
+        if showCountTaskIsComplition(taskList.tasks) == "\u{2713}" { content.secondaryTextProperties.color = UIColor.systemGreen }
+        content.secondaryText = showCountTaskIsComplition(taskList.tasks)
         cell.contentConfiguration = content
         return cell
     }
@@ -86,6 +90,14 @@ class TaskListViewController: UITableViewController {
     }
 
     @IBAction func sortingList(_ sender: UISegmentedControl) {
+        if sort {
+            taskLists = taskLists.sorted(byKeyPath: "date", ascending: false)
+            sort = false
+        } else {
+            taskLists = taskLists.sorted(byKeyPath: "name", ascending: false)
+            sort = true
+        }
+        self.tableView.reloadData()
     }
     
     @objc private func  addButtonPressed() {
@@ -123,5 +135,12 @@ extension TaskListViewController {
         
         let rowIndex = IndexPath(row: taskLists.index(of: taskList) ?? 0, section: 0)
         tableView.insertRows(at: [rowIndex], with: .automatic)
+    }
+    
+    private func showCountTaskIsComplition(_ task: List<Task>) -> String {
+        if task.isEmpty { return "0" }
+        let taskComplition = task.filter( \.isComplete)
+        if task.count == taskComplition.count { return "\u{2713}" }
+        return String(task.count - taskComplition.count)
     }
 }
