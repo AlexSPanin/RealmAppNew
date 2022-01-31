@@ -67,9 +67,9 @@ class StorageManager {
         }
     }
     
-    func done(task: Task, complite: Bool) {
+    func done(task: Task) {
         write {
-            task.setValue(complite, forKey: "isComplete")
+            task.isComplete.toggle() // меняет Bool на противоположное
         }
     }
     

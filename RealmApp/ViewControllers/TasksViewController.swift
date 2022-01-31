@@ -44,6 +44,7 @@ class TasksViewController: UITableViewController {
         section == 0 ? "CURRENT TASKS" : "COMPLETED TASKS"
     }
     
+    // потушить выделение ячейки
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         false
     }
@@ -68,7 +69,7 @@ class TasksViewController: UITableViewController {
     
         var text = "Done"
         var color = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-        var complite = true
+       
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             StorageManager.shared.delete(task)
@@ -85,11 +86,10 @@ class TasksViewController: UITableViewController {
         if indexPath.section == 1 {
             text = "Not Done"
             color = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-            complite = false
         }
         
         let doneAction = UIContextualAction(style: .normal, title: text) { _, _, isDone in
-            StorageManager.shared.done(task: task, complite: complite)
+            StorageManager.shared.done(task: task)
             tableView.reloadData()
             isDone(true)
         }

@@ -12,7 +12,6 @@ import RealmSwift
 class TaskListViewController: UITableViewController {
 
     var taskLists: Results<TaskList>!
-    var sort: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,12 +89,10 @@ class TaskListViewController: UITableViewController {
     }
 
     @IBAction func sortingList(_ sender: UISegmentedControl) {
-        if sort {
+        if sender.selectedSegmentIndex == 0 {
            taskLists = taskLists.sorted(byKeyPath: "date", ascending: true)
-            sort = false
         } else {
             taskLists = taskLists.sorted(byKeyPath: "name", ascending: true)
-            sort = true
         }
         tableView.reloadData()
     }
