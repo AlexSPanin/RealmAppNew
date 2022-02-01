@@ -59,17 +59,9 @@ class TasksViewController: UITableViewController {
         return cell
     }
  
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        true
-    }
-    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
-    
-        var text = "Done"
-        var color = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-       
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             StorageManager.shared.delete(task)
@@ -83,19 +75,39 @@ class TasksViewController: UITableViewController {
             isDone(true)
         }
         
-        if indexPath.section == 1 {
-            text = "Not Done"
-            color = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        }
+        let text = indexPath.section == 0 ? "Done" : "Not Done"
+        let color = indexPath.section == 0 ? #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1) : #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         
         let doneAction = UIContextualAction(style: .normal, title: text) { _, _, isDone in
             StorageManager.shared.done(task: task)
-            tableView.reloadData()
+            
+            // определяем индекс в текущих или выполненных задачах
+            let indexPathForCurrentTask = IndexPath(
+                row: self.currentTasks.index(of: task) ?? 0,
+                section: 0
+            )
+            let indexPathForCompletedTask = IndexPath(
+                row: self.completedTasks.index(of: task) ?? 0,
+                section: 1
+            )
+            
+            // определяем индекс назначения
+            let destinationIndexRow = indexPath.section == 0
+            ? indexPathForCompletedTask
+            : indexPathForCurrentTask
+            
+            // перемещаем строку
+            tableView.moveRow(at: indexPath, to: destinationIndexRow)
             isDone(true)
         }
+        
         doneAction.backgroundColor = color
         editAction.backgroundColor = .orange
         return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     @objc private func addButtonPressed() {
